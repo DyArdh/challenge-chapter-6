@@ -1,0 +1,48 @@
+### Show Data Components
+GET http://localhost:8000/components
+
+### Show Data Component with Specific id
+GET http://localhost:8000/components/1
+
+### Create Data Component
+POST http://localhost:8000/components
+Content-Type: application/json
+
+{
+    "name": "KTT Purple Reddish",
+    "description": "Tactile Clicky"
+}
+
+### Test Create Component without name
+POST http://localhost:8000/components
+Content-Type: application/json
+
+{
+    "description": "Tactile Clicky"
+}
+
+### Update Component
+PUT http://localhost:8000/components/7
+Content-Type: application/json
+
+{
+    "description": "Tactile Clicky Switch"
+}
+
+### Test Update Component with Unavailable id
+PUT http://localhost:8000/components/1000
+Content-Type: application/json
+
+{
+    "description": "Tactile Clicky Switch"
+}
+
+### Delete Component 
+DELETE http://localhost:8000/components/5
+
+### Test Delete Component with Unavailable id
+DELETE http://localhost:8000/components/1000
+
+### Test Delete Component are Being Used in the Product
+
+DELETE http://localhost:8000/components/1
