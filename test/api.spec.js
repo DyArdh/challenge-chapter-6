@@ -146,6 +146,98 @@ describe("Test endpoint /components/:componentId", () => {
       expect(error).toBe("error");
     }
   });
+
+  test("Success: [PUT] Update komponen", async () => {
+    try {
+      const componentId = 6;
+      const res = await supertest(app).put(`/components/${componentId}`).send({
+        description: "Tactile Clicky Switch",
+      });
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(true);
+      expect(res.body.message).toBe(
+        `Component with Id ${componentId} Updated!`
+      );
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [PUT] Komponen tidak ditemukan", async () => {
+    try {
+      const componentId = 1000;
+      const res = await supertest(app).put(`/components/${componentId}`).send({
+        description: "Tactile Clicky Switch",
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(
+        `Component with Id ${componentId} Not Exist!`
+      );
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Success: [DELETE] Menghapus komponen", async () => {
+    try {
+      const componentId = 5;
+      const res = await supertest(app).delete(`/components/${componentId}`);
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(true);
+      expect(res.body.message).toBe(
+        `Component with Id ${componentId} Deleted!`
+      );
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [DELETE] Komponen sedang digunakan", async () => {
+    try {
+      const componentId = 1;
+      const res = await supertest(app).delete(`/components/${componentId}`);
+
+      expect(res.statusCode).toBe(409);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(`Component with Id ${componentId} in use!`);
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [DELETE] Komponen tidak ditemukan", async () => {
+    try {
+      const componentId = 1000;
+      const res = await supertest(app).delete(`/components/${componentId}`);
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(
+        `Component with Id ${componentId} Not Exist!`
+      );
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
 });
 
 // Product Controller
@@ -300,6 +392,96 @@ describe("Test endpoint /products/:productId", () => {
     try {
       const productId = 1000;
       const res = await supertest(app).get(`/products/${productId}`);
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(`Product with Id ${productId} Not Exist!`);
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Success: [PUT] Update Produk", async () => {
+    try {
+      const productId = 6;
+      const res = await supertest(app).put(`/products/${productId}`).send({
+        name: "TMT V75 V2",
+        component_id: 2,
+      });
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(true);
+      expect(res.body.message).toBe(`Product with Id ${productId} Updated!`);
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [PUT] Produk tidak ditemukan", async () => {
+    try {
+      const productId = 1000;
+      const res = await supertest(app).put(`/products/${productId}`).send({
+        name: "TMT V75 V2",
+        component_id: 2,
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(`Product with Id ${productId} Not Exist!`);
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [PUT] Komponen tidak ditemukan", async () => {
+    try {
+      const productId = 1000;
+      const component_id = 1000;
+      const res = await supertest(app).put(`/products/${productId}`).send({
+        name: "TMT V75 V2",
+        component_id: component_id,
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(`Product with Id ${productId} Not Exist!`);
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Success: [DELETE] Menghapus Produk", async () => {
+    try {
+      const productId = 6;
+      const res = await supertest(app).delete(`/products/${productId}`);
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(true);
+      expect(res.body.message).toBe(`Product with Id ${productId} Deleted!`);
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [DELETE] Produk tidak ditemukan", async () => {
+    try {
+      const productId = 1000;
+      const res = await supertest(app).delete(`/products/${productId}`);
 
       expect(res.statusCode).toBe(404);
       expect(res.body).toHaveProperty("status");

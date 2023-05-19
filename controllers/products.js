@@ -143,6 +143,7 @@ module.exports = {
         return res.status(404).json({
           status: false,
           message: `Product with Id ${productId} Not Exist!`,
+          data: null,
         });
       }
 
@@ -174,6 +175,7 @@ module.exports = {
         return res.status(404).json({
           status: false,
           message: `Component with Id ${component_id} Not Exist!`,
+          data: null,
         });
       }
 
@@ -218,7 +220,8 @@ module.exports = {
       if (!deleteProduct) {
         return res.status(404).json({
           status: false,
-          message: `Product with Id ${productId} Not Exist`,
+          message: `Product with Id ${productId} Not Exist!`,
+          data: null,
         });
       }
 

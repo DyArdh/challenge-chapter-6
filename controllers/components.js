@@ -141,6 +141,7 @@ module.exports = {
         return res.status(404).json({
           status: false,
           message: `Component with Id ${componentId} Not Exist!`,
+          data: null,
         });
       }
 
@@ -178,6 +179,7 @@ module.exports = {
         return res.status(409).json({
           status: false,
           message: `Component with Id ${componentId} in use!`,
+          data: null,
         });
       }
 
@@ -189,6 +191,7 @@ module.exports = {
         return res.status(404).json({
           status: false,
           message: `Component with Id ${componentId} Not Exist!`,
+          data: null,
         });
       }
 
