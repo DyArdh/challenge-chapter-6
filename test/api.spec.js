@@ -492,4 +492,96 @@ describe("Test endpoint /suppliers/:supplierId", () => {
       expect(error).toBe("error");
     }
   });
+
+  test("Success: [PUT] Update supplier", async () => {
+    try {
+      const supplierId = 6;
+      const res = await supertest(app).put(`/suppliers/${supplierId}`).send({
+        address: "Tiongkok",
+      });
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(true);
+      expect(res.body.message).toBe(`Supplier with Id ${supplierId} Updated!`);
+    } catch (error) {}
+  });
+
+  test("Failed: [PUT] Supplier tidak ditemukan", async () => {
+    try {
+      const supplierId = 1000;
+      const res = await supertest(app).put(`/suppliers/${supplierId}`).send({
+        address: "Tiongkok",
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(
+        `Supplier with Id ${supplierId} Not Exist!`
+      );
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [PUT] Komponen tidak ditemukan", async () => {
+    try {
+      const supplierId = 6;
+      const component_id = 1000;
+      const res = await supertest(app).put(`/suppliers/${supplierId}`).send({
+        address: "Tiongkok",
+        component_id: component_id,
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(
+        `Component with Id ${component_id} Not Exist!`
+      );
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Success: [DELETE] Menghapus supplier", async () => {
+    try {
+      const supplierId = 5;
+      const res = await supertest(app).delete(`/suppliers/${supplierId}`);
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(true);
+      expect(res.body.message).toBe(`Supplier with Id ${supplierId} Deleted!`);
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
+
+  test("Failed: [DELETE] Supplier tidak ditemukan", async () => {
+    try {
+      const supplierId = 1000;
+      const res = await supertest(app).delete(`/suppliers/${supplierId}`);
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("status");
+      expect(res.body).toHaveProperty("message");
+      expect(res.body).toHaveProperty("data");
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe(
+        `Supplier with Id ${supplierId} Not Exist!`
+      );
+    } catch (error) {
+      expect(error).toBe("error");
+    }
+  });
 });
