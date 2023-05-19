@@ -1,0 +1,916 @@
+openapi: 3.0.0
+info:
+  title: Akukin Company API
+  description: This is an information system used to manage products, components and component suppliers.
+  contact:
+    email: rizuna30@gmail.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+tags:
+  - name: Components
+    description: Show All Component Routes
+  - name: Products
+    description: Show All Product Routes
+  - name: Suppliers
+    description: Show All Supplier Routes
+paths:
+  /components:
+    get:
+      tags:
+        - Components
+      summary: Show All Component Data
+      description: Show All Component Data
+      responses:
+        '200':
+          description: Display All Components
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/component-result'            
+    post:
+      tags:
+        - Components
+      summary: Create Component
+      description: Create Component
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: KTT Purple Reddish
+                description:
+                  type: string
+                  example: Tactile Clicky
+      responses:
+        '201':
+          description: Success Create Component
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: KTT Purple Reddish
+                  description:
+                    type: string
+                    example: Tactile Clicky
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+              examples:
+                nameIsNull:
+                  summary: Field name is Null
+                  value:
+                    status: false
+                    message: Field name is required!
+                    data: {}
+                descriptionIsNull:
+                  summary: Field description is Null
+                  value:
+                    status: false
+                    message: Field description is required!
+                    data: {}
+  /components/{componentId}:
+    get:
+      tags:
+        - Components
+      summary: Show Component with Specified Id
+      description: Show Component with Specified Id
+      parameters:
+        - in: path
+          name: componentId
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: Id of Component
+      responses:
+        '200':
+          description: Display Component
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    $ref: '#/components/schemas/component-result'      
+        '404':
+          $ref: '#/components/responses/component-not-exist'
+    put:
+      tags:
+        - Components
+      summary: Update Component
+      description: Update Component
+      parameters:
+        - in: path
+          name: componentId
+          schema:
+            type: integer
+            example: 6
+          required: true
+          description: Id of Component
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: KTT Purple Reddish
+                description:
+                  type: string
+                  example: Tactile Clicky Switch
+      responses:
+        '201':
+          description: Success Update Component
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+        '404':
+          $ref: '#/components/responses/component-not-exist'
+    delete:
+      tags:
+        - Components
+      summary: Delete Component
+      description: Delete Component
+      parameters:
+        - in: path
+          name: componentId
+          schema:
+            type: integer
+            example: 5
+          required: true
+          description: Id of Component
+      responses:
+        '201':
+          description: Success Delete Component
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Component with Id {componentId} Deleted!
+                  data:
+                    type: object
+        '404':
+          $ref: '#/components/responses/component-not-exist'
+        '409':
+          description: Component in Used
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Component with Id {componentId} in use!
+                  data:
+                    type: object
+  
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Show All Product Data
+      description: Show All Product Data
+      responses:
+        '200':
+          description: Display All Products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product-result'
+    post:
+      tags:
+        - Products
+      summary: Create Product
+      description: Create Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: TMT V75
+                quantity:
+                  type: integer
+                  example: 10
+                component_id:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Success Create Product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: TMT V75
+                  quantity:
+                    type: integer
+                    example: 10
+                  component_id:
+                    type: integer
+                    example: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+              examples:
+                nameIsNull:
+                  summary: Field name is Null
+                  value:
+                    status: false
+                    message: Field name is required!
+                    data: {}
+                quantityIsNull:
+                  summary: Field quantity is Null
+                  value:
+                    status: false
+                    message: Field quantity is required!
+                    data: {}
+                componentIdIsNull:
+                  summary: Field component_id is Null
+                  value:
+                    status: false
+                    message: Field component_id is required!
+                    data: {}
+        '404':
+          $ref: '#/components/responses/component-not-exist'
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Show Product with Specified Id
+      description: Show Product with Specified Id
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: Id of Product
+      responses:
+        '200':
+          description: Display Product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    $ref: '#/components/schemas/product-result'      
+        '404':
+          $ref: '#/components/responses/product-not-exist'
+    put:
+      tags:
+        - Products
+      summary: Update Product
+      description: Update Product
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+            example: 6
+          required: true
+          description: Id of Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: TMT V75 V2
+                quantity:
+                  type: integer
+                  example: 10
+                component_id:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Success Update Product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+        '404':
+          description: Component Id Or Product Id Not Exist
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+              examples:
+                productNotExist:
+                  summary: Product Id Not Exist
+                  value:
+                    status: false
+                    message: Product with Id {productId} Not Exist!
+                    data: {}
+                componentIdNotExist:
+                  summary: Component Id Not Exist
+                  value:
+                    status: false
+                    message: Component with Id {component_id} Not Exist!
+                    data: {}                
+    delete:
+      tags:
+        - Products
+      summary: Delete Product
+      description: Delete Product
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+            example: 4
+          required: true
+          description: Id of Product
+      responses:
+        '201':
+          description: Success Delete Product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Product with Id {productId} Deleted!
+                  data:
+                    type: object
+        '404':
+          $ref: '#/components/responses/product-not-exist'
+  
+  /suppliers:
+    get:
+      tags:
+        - Suppliers
+      summary: Show All Supplier Data
+      description: Show All Supplier Data
+      responses:
+        '200':
+          description: Display All Suppliers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/supplier-result'
+    post:
+      tags:
+        - Suppliers
+      summary: Create Supplier
+      description: Create Supplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
+                    component_id:
+                      type: integer
+            examples:
+              supplier:
+                summary: Create Supplier Without Component
+                value:
+                  name: KTT
+                  address: China
+              supplier-with-component:
+                summary: Create Supplier With Component
+                value:
+                  name: KTT
+                  address: China
+                  component_id: 1
+
+      responses:
+        '201':
+          description: Success Create Supplier
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: array
+              examples:
+                success:
+                  summary: Success Without component_id
+                  value:
+                    status: true
+                    message: Success
+                    data: {
+                      name: KTT,
+                      address: China
+                    }
+                success-with-component-id:
+                  summary: Success With component_id
+                  value:
+                    status: true
+                    message: Success
+                    data: [
+                      {
+                        name: KTT,
+                        address: China
+                      },
+                      {
+                        component_id: 1,
+                        supplier_id: 5
+                      }
+                    ]
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+              examples:
+                nameIsNull:
+                  summary: Field name is Null
+                  value:
+                    status: false
+                    message: Field name is required!
+                    data: {}
+                addressIsNull:
+                  summary: Field address is Null
+                  value:
+                    status: false
+                    message: Field address is required!
+                    data: {}
+        '404':
+          description: Component Id Not Exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Component with Id {component_id} Not Exist!
+                  data:
+                    type: object
+  /suppliers/{supplierId}:
+    get:
+      tags:
+        - Suppliers
+      summary: Show Supplier with Specified Id
+      description: Show Supplier with Specified Id
+      parameters:
+        - in: path
+          name: supplierId
+          schema:
+            type: integer
+            example: 1
+          required: true
+          description: Id of Supplier
+      responses:
+        '200':
+          description: Display Supplier
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    $ref: '#/components/schemas/supplier-result'      
+        '404':
+          $ref: '#/components/responses/supplier-not-exist'
+    put:
+      tags:
+        - Suppliers
+      summary: Update Supplier
+      description: Update Supplier
+      parameters:
+        - in: path
+          name: supplierId
+          schema:
+            type: integer
+            example: 6
+          required: true
+          description: Id of Supplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: KTT
+                address:
+                  type: string
+                  example: Tiongkok
+                component_id:
+                  type: integer
+                  example: 3
+      responses:
+        '201':
+          description: Success Update Supplier
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Supplier with Id {supplierId} Updated!
+                  data:
+                    type: object
+        '404':
+          description: Supplier Id Not Exist
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                      message:
+                        type: string
+                      data:
+                        type: object
+              examples:
+                supplierNotExist:
+                  summary: Supplier Id Not Exist
+                  value:
+                    status: false
+                    message: Supplier with Id {supplierId} Not Exist!
+                    data: {}
+                componentIdNotExist:
+                  summary: Component Id Not Exist
+                  value:
+                    status: false
+                    message: Component with Id {component_id} Not Exist!
+                    data: {}            
+    delete:
+      tags:
+        - Suppliers
+      summary: Delete Supplier
+      description: Delete Supplier
+      parameters:
+        - in: path
+          name: supplierId
+          schema:
+            type: integer
+            example: 5
+          required: true
+          description: Id of Supplier
+      responses:
+        '201':
+          description: Success Delete Supplier
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Supplier with Id {supplierId} Deleted!
+                  data:
+                    type: object
+        '404':
+          $ref: '#/components/responses/supplier-not-exist'
+
+components:
+  schemas:
+    component-result:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: Gateron Milky Yellow
+        description:
+          type: string
+          example: Linear
+        Products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: Akukin Mark II
+              quantity:
+                type: integer
+                example: 10
+        Suppliers:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 2
+              name:
+                type: string
+                example: JWICK
+              address:
+                type: string
+                example: China
+    product-result:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Akukin Mark II
+        quantity:
+          type: integer
+          example: 10
+        Components:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 2
+              name:
+                type: string
+                example: Gateron Milky Yellow
+              description:
+                type: string
+                example: Linear
+    supplier-result:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Gateron
+        address:
+          type: string
+          example: China
+        Components:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: Gateron Oil King
+              description:
+                type: string
+                example: Linear
+
+  responses:
+    component-not-exist:
+      description: Component Id Not Exist
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Component with Id {componentId} Not Exist!
+              data:
+                type: object
+    
+    product-not-exist:
+      description: Product Id Not Exist
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Product with Id {productId} Not Exist!
+              data:
+                type: object
+
+    supplier-not-exist:
+      description: Product Id Not Exist
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Product with Id {productId} Not Exist!
+              data:
+                type: object

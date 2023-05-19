@@ -1,0 +1,82 @@
+### Show Data Suppliers
+GET http://localhost:8000/suppliers
+
+### Show Data Supplier with Specific id
+GET http://localhost:8000/suppliers/1
+
+### Create Data Supplier
+POST http://localhost:8000/suppliers
+Content-Type: application/json
+
+{
+    "name": "KTT",
+    "address": "China"
+}
+
+### Test Create Supplier without name
+POST http://localhost:8000/suppliers
+Content-Type: application/json
+
+{
+    "address": "China"
+}
+
+### Test Create Data Supplier with component_id
+POST http://localhost:8000/suppliers
+Content-Type: application/json
+
+{
+    "name": "KTT",
+    "address": "China",
+    "component_id": 1
+}
+
+### Test Create Data Supplier with Unavailable id
+POST http://localhost:8000/suppliers
+Content-Type: application/json
+
+{
+    "name": "KTT",
+    "address": "China",
+    "component_id": 1000
+}
+
+### Update Supplier
+PUT http://localhost:8000/suppliers/6
+Content-Type: application/json
+
+{
+    "address": "Tiongkok"
+}
+
+### Test Update Supplier with Unavailable id
+PUT http://localhost:8000/suppliers/1000
+Content-Type: application/json
+
+{
+    "name": "KTT/Content"
+}
+
+### Test Update Supplier and component_id
+PUT http://localhost:8000/suppliers/6
+Content-Type: application/json
+
+{
+    "name": "KTT/Content",
+    "component_id": 1
+}
+
+### Test Update Supplier with Unavailable component_id
+PUT http://localhost:8000/suppliers/6
+Content-Type: application/json
+
+{
+    "name": "KTT/Content",
+    "component_id": 1000
+}
+
+### Delete Supplier 
+DELETE http://localhost:8000/suppliers/5
+
+### Test Delete Supplier with Unavailable id
+DELETE http://localhost:8000/suppliers/1000

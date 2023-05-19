@@ -1,0 +1,83 @@
+### Show Data Products
+GET http://localhost:8000/products
+
+### Show Data Product with Specific id
+GET http://localhost:8000/products/1
+
+### Create Data Product
+POST http://localhost:8000/products
+Content-Type: application/json
+
+{
+    "name": "TMT V75",
+    "quantity": 10,
+    "component_id": 1
+}
+
+### Test Create Product without name
+POST http://localhost:8000/products
+Content-Type: application/json
+
+{
+    "quantity": 10,
+    "component_id": 1
+}
+
+### Test Create Product without component_id
+POST http://localhost:8000/products
+Content-Type: application/json
+
+{
+    "name": "TMT V75",
+    "quantity": 10
+}
+
+### Test Create Product with Unavailable component_id
+POST http://localhost:8000/products
+Content-Type: application/json
+
+{
+    "name": "TMT V75",
+    "quantity": 10,
+    "component_id": 1000
+}
+
+### Update Product
+PUT http://localhost:8000/products/6
+Content-Type: application/json
+
+{
+    "name": "TMT V75 V2"
+}
+
+### Update Product and component_id
+PUT http://localhost:8000/products/6
+Content-Type: application/json
+
+{
+    "name": "TMT V75 V2",
+    "component_id": 2
+}
+
+### Test Update Product with Unavailable id
+PUT http://localhost:8000/products/1000
+Content-Type: application/json
+
+{
+    "name": "TMT V75 V2"
+}
+
+### Test Update Product with Unavailable component_id
+PUT http://localhost:8000/products/6
+Content-Type: application/json
+
+{
+    "name": "TMT V75 V2",
+    "component_id": 1000
+}
+
+### Delete Product 
+DELETE http://localhost:8000/products/4
+
+### Test Delete Product with Unavailable id
+DELETE http://localhost:8000/products/1000
