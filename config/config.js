@@ -1,6 +1,13 @@
 require("dotenv").config();
 
-const { DB_USERNAME, DB_PASSWORD, DB_NAME, DB_HOST, DB_DIALECT } = process.env;
+const {
+  DB_USERNAME,
+  DB_PASSWORD,
+  DB_NAME,
+  DB_HOST,
+  DB_PORT = 5432,
+  DB_DIALECT,
+} = process.env;
 
 module.exports = {
   development: {
@@ -8,6 +15,7 @@ module.exports = {
     password: DB_PASSWORD,
     database: DB_NAME,
     host: DB_HOST,
+    port: DB_PORT,
     dialect: DB_DIALECT,
   },
   test: {
@@ -15,6 +23,7 @@ module.exports = {
     password: DB_PASSWORD,
     database: DB_NAME,
     host: DB_HOST,
+    port: DB_PORT,
     dialect: DB_DIALECT,
   },
   production: {
@@ -22,6 +31,7 @@ module.exports = {
     password: DB_PASSWORD,
     database: DB_NAME,
     host: DB_HOST,
+    port: DB_PORT,
     dialect: DB_DIALECT,
   },
 };
