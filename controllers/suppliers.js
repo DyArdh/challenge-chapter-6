@@ -147,7 +147,8 @@ module.exports = {
       if (!supplier) {
         return res.status(404).json({
           status: false,
-          message: `Supplier with Id ${supplierId} Not Exist`,
+          message: `Supplier with Id ${supplierId} Not Exist!`,
+          data: null,
         });
       }
 
@@ -179,6 +180,7 @@ module.exports = {
         return res.status(404).json({
           status: false,
           message: `Component with Id ${component_id} Not Exist!`,
+          data: null,
         });
       }
 
@@ -220,7 +222,8 @@ module.exports = {
       if (!deleteSupplier) {
         return res.status(404).json({
           status: false,
-          message: `Supplier with Id ${supplierId} Not Exist`,
+          message: `Supplier with Id ${supplierId} Not Exist!`,
+          data: null,
         });
       }
 
